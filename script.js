@@ -10,6 +10,62 @@ function getExecutablePath(inputId) {
     return input.value.trim() || input.placeholder;
 }
 
+// New functions to try Steam-specific protocols
+function launchWithSteamProtocol() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using Steam's protocol with the executable path
+        window.location.href = `steam://open/console`;
+        showStatus('Attempting to launch through Steam console...');
+    } catch (error) {
+        showStatus('Error launching through Steam console: ' + error.message, true);
+    }
+}
+
+function launchWithSteamGameProtocol() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using Steam's game protocol
+        window.location.href = `steam://rungameid/440?launch=1&args=${encodeURIComponent(exePath)}`;
+        showStatus('Attempting to launch through Steam game protocol...');
+    } catch (error) {
+        showStatus('Error launching through Steam game protocol: ' + error.message, true);
+    }
+}
+
+function launchWithSteamShortcut() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using Steam's shortcut protocol
+        window.location.href = `steam://shortcut/440?path=${encodeURIComponent(exePath)}`;
+        showStatus('Attempting to launch through Steam shortcut...');
+    } catch (error) {
+        showStatus('Error launching through Steam shortcut: ' + error.message, true);
+    }
+}
+
+function launchWithSteamLaunchProtocol() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using Steam's launch protocol
+        window.location.href = `steam://launch/440?args=${encodeURIComponent(exePath)}`;
+        showStatus('Attempting to launch through Steam launch protocol...');
+    } catch (error) {
+        showStatus('Error launching through Steam launch protocol: ' + error.message, true);
+    }
+}
+
+function launchWithSteamExecProtocol() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using Steam's exec protocol
+        window.location.href = `steam://exec/${encodeURIComponent(exePath)}`;
+        showStatus('Attempting to launch through Steam exec protocol...');
+    } catch (error) {
+        showStatus('Error launching through Steam exec protocol: ' + error.message, true);
+    }
+}
+
 function launchExecutable() {
     try {
         const exePath = getExecutablePath('mainExePath');
