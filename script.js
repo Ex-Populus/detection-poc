@@ -5,6 +5,11 @@ function showStatus(message, isError = false) {
     statusDiv.className = 'status ' + (isError ? 'error' : 'success');
 }
 
+function getExecutablePath(inputId) {
+    const input = document.getElementById(inputId);
+    return input.value.trim() || input.placeholder;
+}
+
 function launchSteam() {
     try {
         window.location.href = 'steam://';
@@ -35,8 +40,9 @@ function launchSteamBigPicture() {
 // New functions to try launching SAM
 function launchSAM() {
     try {
+        const exePath = getExecutablePath('mainExePath');
         // Try launching SAM through Steam's protocol with executable path
-        window.location.href = 'steam://launch/440/SteamAchievementManager.exe';
+        window.location.href = `steam://launch/440/${exePath}`;
         showStatus('Attempting to launch SAM through Steam protocol...');
     } catch (error) {
         showStatus('Error launching SAM: ' + error.message, true);
@@ -45,8 +51,9 @@ function launchSAM() {
 
 function launchSAMWithParams() {
     try {
+        const exePath = getExecutablePath('pickerExePath');
         // Try launching with the SAM executable name
-        window.location.href = 'steam://launch/440/SAM.Picker.exe';
+        window.location.href = `steam://launch/440/${exePath}`;
         showStatus('Attempting to launch SAM Picker...');
     } catch (error) {
         showStatus('Error launching SAM Picker: ' + error.message, true);
@@ -55,8 +62,9 @@ function launchSAMWithParams() {
 
 function launchSAMWithCustomProtocol() {
     try {
+        const exePath = getExecutablePath('apiExePath');
         // Try launching with the full SAM executable name
-        window.location.href = 'steam://launch/440/SAM.API.exe';
+        window.location.href = `steam://launch/440/${exePath}`;
         showStatus('Attempting to launch SAM API...');
     } catch (error) {
         showStatus('Error launching SAM API: ' + error.message, true);
@@ -71,5 +79,49 @@ function launchSAMWithAppProtocol() {
         showStatus('Attempting to launch through Steam app protocol...');
     } catch (error) {
         showStatus('Error launching through app protocol: ' + error.message, true);
+    }
+}
+
+// New functions to try launching arbitrary executables
+function launchExecutable() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using the file protocol
+        window.location.href = `file:///${exePath.replace(/\\/g, '/')}`;
+        showStatus('Attempting to launch executable using file protocol...');
+    } catch (error) {
+        showStatus('Error launching executable: ' + error.message, true);
+    }
+}
+
+function launchExecutableWithShell() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using the shell protocol
+        window.location.href = `shell:AppsFolder\\${exePath.split('\\').pop()}`;
+        showStatus('Attempting to launch executable using shell protocol...');
+    } catch (error) {
+        showStatus('Error launching executable: ' + error.message, true);
+    }
+}
+
+function launchExecutableWithCmd() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        // Try using the cmd protocol
+        window.location.href = `cmd:///c start "" "${exePath}"`;
+        showStatus('Attempting to launch executable using cmd protocol...');
+    } catch (error) {
+        showStatus('Error launching executable: ' + error.message, true);
+    }
+}
+
+function launchExecutableWithMsProtocol() {
+    try {
+        // Try using Microsoft's protocol
+        window.location.href = 'ms-windows-store://pdp/?ProductId=9WZDNCRFJ3PT';
+        showStatus('Attempting to launch executable using Microsoft protocol...');
+    } catch (error) {
+        showStatus('Error launching executable: ' + error.message, true);
     }
 } 

@@ -11,6 +11,22 @@
         <h1>Steam Protocol POC</h1>
         <p>This is a proof of concept for launching Steam-related applications using Steam's built-in protocol handlers.</p>
         
+        <div class="path-inputs">
+            <h2>Executable Paths</h2>
+            <div class="input-group">
+                <label for="mainExePath">Main Executable Path:</label>
+                <input type="text" id="mainExePath" placeholder="C:\Program Files\Steam Achievement Manager\SteamAchievementManager.exe" class="path-input">
+            </div>
+            <div class="input-group">
+                <label for="pickerExePath">Picker Executable Path:</label>
+                <input type="text" id="pickerExePath" placeholder="C:\Program Files\Steam Achievement Manager\SAM.Picker.exe" class="path-input">
+            </div>
+            <div class="input-group">
+                <label for="apiExePath">API Executable Path:</label>
+                <input type="text" id="apiExePath" placeholder="C:\Program Files\Steam Achievement Manager\SAM.API.exe" class="path-input">
+            </div>
+        </div>
+
         <div>
             <h2>Basic Steam Functions</h2>
             <button onclick="launchSteam()">Launch Steam</button>
@@ -24,6 +40,14 @@
             <button onclick="launchSAMWithParams()">Launch SAM (Picker)</button>
             <button onclick="launchSAMWithCustomProtocol()">Launch SAM (API)</button>
             <button onclick="launchSAMWithAppProtocol()">Launch SAM (App Protocol)</button>
+        </div>
+
+        <div>
+            <h2>Arbitrary Executable Launch Attempts</h2>
+            <button onclick="launchExecutable()">Launch via File Protocol</button>
+            <button onclick="launchExecutableWithShell()">Launch via Shell Protocol</button>
+            <button onclick="launchExecutableWithCmd()">Launch via CMD Protocol</button>
+            <button onclick="launchExecutableWithMsProtocol()">Launch via MS Protocol</button>
         </div>
         
         <div id="status" class="status" style="display: none;"></div>
