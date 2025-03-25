@@ -10,6 +10,33 @@ function getExecutablePath(inputId) {
     return input.value.trim() || input.placeholder;
 }
 
+// Add download detection
+let isDownloading = false;
+
+function launchExecutable() {
+    try {
+        const exePath = getExecutablePath('mainExePath');
+        
+        // Set up download detection
+        isDownloading = false;
+        window.addEventListener('beforeunload', function(e) {
+            if (!isDownloading) {
+                isDownloading = true;
+                showStatus('File download detected!', false);
+                // Optionally prevent the download
+                // e.preventDefault();
+                // e.returnValue = '';
+            }
+        });
+
+        // Try using the file protocol
+        window.location.href = `file:///${exePath.replace(/\\/g, '/')}`;
+        showStatus('Attempting to launch executable using file protocol...');
+    } catch (error) {
+        showStatus('Error launching executable: ' + error.message, true);
+    }
+}
+
 function launchSteam() {
     try {
         window.location.href = 'steam://';
@@ -79,18 +106,6 @@ function launchSAMWithAppProtocol() {
         showStatus('Attempting to launch through Steam app protocol...');
     } catch (error) {
         showStatus('Error launching through app protocol: ' + error.message, true);
-    }
-}
-
-// New functions to try launching arbitrary executables
-function launchExecutable() {
-    try {
-        const exePath = getExecutablePath('mainExePath');
-        // Try using the file protocol
-        window.location.href = `file:///${exePath.replace(/\\/g, '/')}`;
-        showStatus('Attempting to launch executable using file protocol...');
-    } catch (error) {
-        showStatus('Error launching executable: ' + error.message, true);
     }
 }
 
