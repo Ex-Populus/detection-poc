@@ -10,25 +10,50 @@ function getExecutablePath(inputId) {
     return input.value.trim() || input.placeholder;
 }
 
-async function launchExecutable() {
+function launchExecutable() {
     try {
         const exePath = getExecutablePath('mainExePath');
         const fileUrl = `file:///${exePath.replace(/\\/g, '/')}`;
         
-        showStatus('Checking file accessibility...');
+        showStatus('Attempting to launch executable...');
         
-        // Try to fetch the file
-        const response = await fetch(fileUrl);
-        
-        if (response.ok) {
-            showStatus('File exists and is accessible!', false);
-            // Try to launch it
-            window.location.href = fileUrl;
-        } else {
-            showStatus('File not accessible: ' + response.statusText, true);
-        }
+        // Try multiple methods to launch the file
+        const methods = [
+            // Method 1: Direct file protocol
+            () => window.location.href = fileUrl,
+            
+            // Method 2: Using a data URL with the file path
+            () => window.location.href = `data:text/plain;base64,${btoa(fileUrl)}`,
+            
+            // Method 3: Using a blob URL
+            () => {
+                const blob = new Blob([fileUrl], { type: 'text/plain' });
+                const blobUrl = URL.createObjectURL(blob);
+                window.location.href = blobUrl;
+            },
+            
+            // Method 4: Using an iframe (might be blocked by browsers)
+            () => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = fileUrl;
+                document.body.appendChild(iframe);
+            }
+        ];
+
+        // Try each method
+        methods.forEach(method => {
+            try {
+                method();
+            } catch (e) {
+                console.log('Method failed:', e);
+            }
+        });
+
+        // Show a message about potential download
+        showStatus('If the file exists, it may be downloaded instead of launched due to browser security restrictions.', false);
     } catch (error) {
-        showStatus('Error accessing file: ' + error.message, true);
+        showStatus('Error attempting to launch file: ' + error.message, true);
     }
 }
 
