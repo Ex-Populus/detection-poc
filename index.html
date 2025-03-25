@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Protocol POC</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Steam Protocol POC</h1>
+        <p>This is a proof of concept for launching Steam-related applications using Steam's built-in protocol handlers.</p>
+        
+        <div>
+            <h2>Basic Steam Functions</h2>
+            <button onclick="launchSteam()">Launch Steam</button>
+            <button onclick="launchSteamLibrary()">Launch Steam Library</button>
+            <button onclick="launchSteamBigPicture()">Launch Steam Big Picture</button>
+        </div>
+
+        <div>
+            <h2>SAM Launch Attempts</h2>
+            <button onclick="launchSAM()">Launch SAM (Main)</button>
+            <button onclick="launchSAMWithParams()">Launch SAM (Picker)</button>
+            <button onclick="launchSAMWithCustomProtocol()">Launch SAM (API)</button>
+            <button onclick="launchSAMWithAppProtocol()">Launch SAM (App Protocol)</button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
