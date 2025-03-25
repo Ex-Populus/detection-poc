@@ -10,30 +10,25 @@ function getExecutablePath(inputId) {
     return input.value.trim() || input.placeholder;
 }
 
-// Add download detection
-let isDownloading = false;
-
-function launchExecutable() {
+async function launchExecutable() {
     try {
         const exePath = getExecutablePath('mainExePath');
+        const fileUrl = `file:///${exePath.replace(/\\/g, '/')}`;
         
-        // Set up download detection
-        isDownloading = false;
-        window.addEventListener('beforeunload', function(e) {
-            if (!isDownloading) {
-                isDownloading = true;
-                showStatus('File download detected!', false);
-                // Optionally prevent the download
-                // e.preventDefault();
-                // e.returnValue = '';
-            }
-        });
-
-        // Try using the file protocol
-        window.location.href = `file:///${exePath.replace(/\\/g, '/')}`;
-        showStatus('Attempting to launch executable using file protocol...');
+        showStatus('Checking file accessibility...');
+        
+        // Try to fetch the file
+        const response = await fetch(fileUrl);
+        
+        if (response.ok) {
+            showStatus('File exists and is accessible!', false);
+            // Try to launch it
+            window.location.href = fileUrl;
+        } else {
+            showStatus('File not accessible: ' + response.statusText, true);
+        }
     } catch (error) {
-        showStatus('Error launching executable: ' + error.message, true);
+        showStatus('Error accessing file: ' + error.message, true);
     }
 }
 
