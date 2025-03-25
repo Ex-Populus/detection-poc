@@ -305,4 +305,65 @@ function launchSteamWithDevMode() {
     } catch (error) {
         showStatus('Error launching Steam in dev mode: ' + error.message, true);
     }
+}
+
+function sendSteamCommandLine() {
+    try {
+        // Try sending commands through Steam's command line interface
+        const commands = [
+            'steam://open/console/+user_friends',
+            'steam://open/console/+user_info',
+            'steam://open/console/+download_sources',
+            'steam://open/console/+print_sdr_ping',
+            'steam://open/console/+status',
+            'steam://open/console/+net_status'
+        ];
+        
+        commands.forEach(cmd => {
+            try {
+                // The command line format we see in the console
+                window.location.href = cmd;
+            } catch (e) {
+                console.log('Command failed:', e);
+            }
+        });
+        
+        showStatus('Attempting to send command line arguments to Steam...');
+    } catch (error) {
+        showStatus('Error sending command line arguments: ' + error.message, true);
+    }
+}
+
+function launchSteamWithDebug() {
+    try {
+        // Try launching Steam with debug parameters
+        const debugCommands = [
+            'steam://open/console/-dev',
+            'steam://open/console/-debug',
+            'steam://open/console/-console',
+            'steam://open/console/-v'
+        ];
+        
+        debugCommands.forEach(cmd => {
+            try {
+                window.location.href = cmd;
+            } catch (e) {
+                console.log('Debug command failed:', e);
+            }
+        });
+        
+        showStatus('Attempting to launch Steam with debug parameters...');
+    } catch (error) {
+        showStatus('Error launching Steam with debug parameters: ' + error.message, true);
+    }
+}
+
+function launchSteamWithVerbose() {
+    try {
+        // Try launching Steam with verbose output
+        window.location.href = 'steam://open/console/-v';
+        showStatus('Attempting to launch Steam with verbose output...');
+    } catch (error) {
+        showStatus('Error launching Steam with verbose output: ' + error.message, true);
+    }
 } 
