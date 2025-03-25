@@ -215,4 +215,48 @@ function launchExecutableWithMsProtocol() {
     } catch (error) {
         showStatus('Error launching executable: ' + error.message, true);
     }
+}
+
+function openWebpageInSteam() {
+    try {
+        // Try opening a webpage in Steam's browser
+        window.location.href = 'steam://open/url/https://www.google.com';
+        showStatus('Attempting to open webpage in Steam browser...');
+    } catch (error) {
+        showStatus('Error opening webpage in Steam: ' + error.message, true);
+    }
+}
+
+function openSteamConsole() {
+    try {
+        // Open Steam's console which has browser capabilities
+        window.location.href = 'steam://open/console';
+        showStatus('Attempting to open Steam console...');
+    } catch (error) {
+        showStatus('Error opening Steam console: ' + error.message, true);
+    }
+}
+
+function analyzeSteamInfo() {
+    try {
+        // Try various Steam protocol combinations to gather information
+        const protocols = [
+            'steam://open/console',
+            'steam://open/url/steam://open/console',
+            'steam://open/url/steam://open/url/https://www.google.com',
+            'steam://open/url/steam://open/console'
+        ];
+        
+        protocols.forEach(protocol => {
+            try {
+                window.location.href = protocol;
+            } catch (e) {
+                console.log('Protocol failed:', e);
+            }
+        });
+        
+        showStatus('Attempting to analyze Steam information...');
+    } catch (error) {
+        showStatus('Error analyzing Steam info: ' + error.message, true);
+    }
 } 
