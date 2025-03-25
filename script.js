@@ -259,4 +259,50 @@ function analyzeSteamInfo() {
     } catch (error) {
         showStatus('Error analyzing Steam info: ' + error.message, true);
     }
+}
+
+function sendSteamConsoleCommand() {
+    try {
+        // Try sending a command directly to Steam console
+        window.location.href = 'steam://open/console';
+        // Note: This will open the console, but we can't directly send commands
+        // as the console needs to be manually typed
+        showStatus('Steam console opened. Commands need to be typed manually.');
+    } catch (error) {
+        showStatus('Error opening Steam console: ' + error.message, true);
+    }
+}
+
+function launchSteamWithConsoleCommand() {
+    try {
+        // Try launching Steam with console commands as parameters
+        const commands = [
+            'steam://open/console/+user_friends',
+            'steam://open/console/+user_info',
+            'steam://open/console/+download_sources',
+            'steam://open/console/+print_sdr_ping'
+        ];
+        
+        commands.forEach(cmd => {
+            try {
+                window.location.href = cmd;
+            } catch (e) {
+                console.log('Command failed:', e);
+            }
+        });
+        
+        showStatus('Attempting to send console commands to Steam...');
+    } catch (error) {
+        showStatus('Error sending console commands: ' + error.message, true);
+    }
+}
+
+function launchSteamWithDevMode() {
+    try {
+        // Try launching Steam in dev mode which enables additional console features
+        window.location.href = 'steam://open/console/-dev';
+        showStatus('Attempting to launch Steam in dev mode...');
+    } catch (error) {
+        showStatus('Error launching Steam in dev mode: ' + error.message, true);
+    }
 } 
